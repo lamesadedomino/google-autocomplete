@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Google Address Autocomplete</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+    <script>
+      function initAutocomplete() {
+        const input = document.getElementById("autocomplete");
+        const autocomplete = new google.maps.places.Autocomplete(input, {
+          types: ["address"],
+          componentRestrictions: { country: "us" }
+        });
+
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          if (place && place.formatted_address) {
+            // Send the address back to the Wix page
+            window.parent.postMessage(place.formatted_address, "*");
+          }
+        });
+      }
+
+      window.onload = initAutocomplete;
+    </script>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      input {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        outline: none;
+      }
+    </style>
+  </head>
+  <body>
+    <input id="autocomplete" type="text" placeholder="Start typing your address..." />
+  </body>
+</html>
